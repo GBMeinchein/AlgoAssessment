@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace TGS.Challenge
 {
   /*
@@ -22,9 +25,33 @@ namespace TGS.Challenge
      */
     public class Anagram
     {
-      public bool AreAnagrams(string word1, string word2)
-      {
-        return false;
-      }
+        public bool AreAnagrams(string word1, string word2)
+        {
+            if (string.IsNullOrEmpty(word1) ||
+                string.IsNullOrEmpty(word2))
+                throw new ArgumentException("Invalid parameters!");
+
+            word1 = new String(word1.ToLower().Where(Char.IsLetter).ToArray());
+            word2 = new String(word2.ToLower().Where(Char.IsLetter).ToArray());
+            string anagram = string.Empty;
+
+            for (int i = 0; i < word1.Length; i++)
+            {
+                for (int x = 0; x < word2.Length; x++)
+                {
+                    if (word1[i] == word2[x])
+                    {
+                        anagram += word2[x];
+                        word2 = word2.Remove(x, 1);
+                        break;
+                    }
+                }
+            }
+
+            if (word1 == anagram)
+                return true;
+
+            return false;
+        }
     }
 }
